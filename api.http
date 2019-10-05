@@ -1,0 +1,87 @@
+# MyForum
+# Some brief description.
+
+###
+
+# List all articles
+# 
+# none
+GET {{host}}/forum/article
+
+###
+
+# Create an article
+# 
+# none
+POST {{host}}/forum/article
+Content-Type: application/json
+
+{
+    "body": {
+        "id": 0,
+        "authorId": 0,
+        "publicationDate": "",
+        "topic": "body.topic"
+    }
+}
+
+###
+
+# Search article by Id
+# 
+# none
+GET {{host}}/forum/article/{{param_articleId}}
+
+###
+
+# Create an author
+# 
+# none
+POST {{host}}/author
+Content-Type: application/json
+
+{
+    "body": {
+        "id": 0,
+        "username": "body.username",
+        "firstName": "body.firstName",
+        "lastName": "body.lastName",
+        "email": "body.email"
+    }
+}
+
+###
+
+# Logs author into the system
+GET {{host}}/author/login
+
+###
+
+# Get author by user name
+GET {{host}}/author/{{param_authorId}}
+
+###
+
+# Updated author
+# 
+# none
+PUT {{host}}/author/{{param_authorId}}
+Content-Type: application/json
+
+{
+    "body": {
+        "id": 0,
+        "username": "body.username",
+        "firstName": "body.firstName",
+        "lastName": "body.lastName",
+        "email": "body.email"
+    }
+}
+
+###
+
+# Delete author
+# 
+# none
+DELETE {{host}}/author/{{param_authorId}}
+

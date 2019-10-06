@@ -7,22 +7,40 @@ import io.ktor.response.respond
 import io.ktor.swagger.experimental.getBodyParam
 import io.ktor.swagger.experimental.getPath
 import io.ktor.swagger.experimental.httpException
-import java.lang.StringBuilder
+import io.ktor.thymeleaf.ThymeleafContent
 import java.util.*
 
-class ForumRoute(){
+class ForumRoute() {
 
-    val articles = mutableListOf<Article>()
-
+    private val articles = mutableListOf(
+        Article(
+            id = 0,
+            authorId = 0,
+            title = "For Braves and Cardinals, the Managers Are Company Men",
+            content = "Brian Snitker has been in Atlanta’s system since the Carter administration, and Mike Shildt has never worked for another pro baseball organization — rarities in the modern game.",
+            publicationDate = Date(),
+            topic = "Sport"
+        ),
+        Article(
+            id = 1,
+            authorId = 0,
+            title = "N.F.L. Week 5 Predictions: Our Picks Against the Spread",
+            content = "Red-hot backup quarterbacks will battle in Carolina, Patrick Mahomes gets a spotlight in prime time, and something has to give when hapless Cincinnati hosts winless Arizona.",
+            publicationDate = Date(),
+            topic = "Sport"
+        ), Article(
+            id = 0,
+            authorId = 0,
+            title = "For Braves and Cardinals, the Managers Are Company Men",
+            content = "Brian Snitker has been in Atlanta’s system since the Carter administration, and Mike Shildt has never worked for another pro baseball organization — rarities in the modern game.",
+            publicationDate = Date(),
+            topic = "Sport"
+        )
+        )
 
     suspend fun getArticles(call: ApplicationCall) {
-        val builder = StringBuilder()
-        for(article in articles){
-            builder
-                .append(article.title)
-                .append("/n")
-        }
-        call.respond(builder.toString())
+        val content = mapOf("articles" to articles)
+        call.respond(ThymeleafContent("articles", content))
     }
 
     suspend fun createArticle(call: ApplicationCall) {
@@ -34,6 +52,7 @@ class ForumRoute(){
                 id = 0,
                 authorId = 0,
                 title = "article csucs",
+                content = "content",
                 publicationDate = Date(),
                 topic = "topic"
             )
@@ -51,6 +70,7 @@ class ForumRoute(){
                 id = 0,
                 authorId = 0,
                 title = "a legujabb hirek.",
+                content = "content",
                 publicationDate = Date(),
                 topic = "myforumserver.kt"
             )

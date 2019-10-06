@@ -10,7 +10,6 @@ import io.ktor.routing.*
  */
 class MyForumServer {
 
-}
     fun Routing.registerForum() {
         val fr = ForumRoute()
         route("/forum/article") {
@@ -30,3 +29,4 @@ class MyForumServer {
             delete("/{authorId}") { ar.deleteAuthor(call) }
         }
     }
+}

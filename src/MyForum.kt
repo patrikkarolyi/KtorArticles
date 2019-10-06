@@ -1,9 +1,7 @@
 package hu.bme.koltin.mdt72t
 
+import io.ktor.swagger.experimental.verifyParam
 import java.util.*
-import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.swagger.experimental.*
 
 data class Article(
     val id: Long,
@@ -12,7 +10,7 @@ data class Article(
     val topic: String
 ) {
     init {
-        topic.verifyParam("topic") { it in setOf("Technology", "Biology", "Physics", "Matemathics","Sport") }
+        topic.verifyParam("topic") { it in setOf("Technology", "Biology", "Physics", "Matemathics", "Sport") }
     }
 }
 

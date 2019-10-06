@@ -6,6 +6,7 @@ import java.util.*
 data class Article(
     val id: Long,
     val authorId: Long,
+    val title: String,
     val publicationDate: Date,
     val topic: String
 ) {

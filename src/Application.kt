@@ -50,7 +50,8 @@ fun Application.module() {
         }
 
         get("/html-thymeleaf") {
-            call.respond(ThymeleafContent("index", mapOf("user" to ThymeleafUser(1, "user1"))))
+            val content = mapOf("movie" to ThymeleafUser(1, "user1"))
+            call.respond(ThymeleafContent("index", content))
         }
 
         get("/json/gson") {

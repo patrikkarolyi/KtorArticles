@@ -15,6 +15,7 @@ class MyForumServer {
         route("/forum/article") {
             get("/") { fr.getArticles(call) }
             post("/") { fr.createArticle(call) }
+            get("/new") { fr.toCreateArticle(call) }
             get("/{articleId}") { fr.getArticle(call) }
         }
     }

@@ -28,7 +28,8 @@ class ForumRoute() {
             content = "Red-hot backup quarterbacks will battle in Carolina, Patrick Mahomes gets a spotlight in prime time, and something has to give when hapless Cincinnati hosts winless Arizona.",
             publicationDate = Date(),
             topic = "Sport"
-        ), Article(
+        ),
+        Article(
             id = 0,
             authorId = 0,
             title = "For Braves and Cardinals, the Managers Are Company Men",
@@ -47,16 +48,7 @@ class ForumRoute() {
         val body = call.getBodyParam<Article>("body")
         if (false) httpException(HttpStatusCode.BadRequest)
         articles.add(body)
-        call.respond(
-            Article(
-                id = 0,
-                authorId = 0,
-                title = "article csucs",
-                content = "content",
-                publicationDate = Date(),
-                topic = "topic"
-            )
-        )
+        call.respond(body)
     }
 
     suspend fun getArticle(call: ApplicationCall) {
@@ -75,6 +67,11 @@ class ForumRoute() {
                 topic = "myforumserver.kt"
             )
         )
+    }
+
+    suspend fun toCreateArticle(call: ApplicationCall) {
+        val content = mapOf("articles" to articles)
+        call.respond(ThymeleafContent("newarticle", content))
     }
 
 }

@@ -17,8 +17,7 @@ import com.zaxxer.hikari.HikariDataSource
 import io.ktor.jackson.*
 import io.ktor.auth.*
 import io.ktor.swagger.experimental.*
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -103,6 +102,12 @@ fun initDb(){
     Database.connect(hikari())
     transaction {
         SchemaUtils.create(AuthorTable,ArticleTable)
+        AuthorTable.insert{
+            it[email]="papaja"
+            it[firstname]="asd"
+            it[lastname]="asd"
+            it[username]="asd"
+        }
     }
 }
 

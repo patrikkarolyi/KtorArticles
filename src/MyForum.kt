@@ -32,7 +32,7 @@ data class Author(
     val email: String
 )
 
-object AuthorTable : Table() {
+object AuthorTable : Table("authors") {
     val id = integer("id").primaryKey().autoIncrement()
     val username = varchar("username", 255)
     val firstname = varchar("firstname", 255)

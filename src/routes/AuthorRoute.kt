@@ -1,6 +1,7 @@
 package hu.bme.koltin.mdt72t.routes
 
 import hu.bme.koltin.mdt72t.Author
+import hu.bme.koltin.mdt72t.db.AuthorInteractor
 import io.ktor.application.ApplicationCall
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
@@ -21,13 +22,9 @@ class AuthorRoute {
     )
 
     suspend fun getAuthors(call: ApplicationCall) {
-        val builder = StringBuilder()
-        for (author in authors) {
-            builder
-                .append(author.username)
-                .append("/n")
-        }
-        call.respond(builder.toString())
+        val a = AuthorInteractor()
+        a.getArticles()
+        call.respond("oksa")
     }
 
     suspend fun loginAuthor(call: ApplicationCall) {

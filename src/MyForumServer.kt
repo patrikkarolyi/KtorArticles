@@ -23,7 +23,7 @@ class MyForumServer {
     fun Routing.registerAuthor() {
         val ar = AuthorRoute()
         route("/author") {
-            post("/") { ar.getAuthors(call) }
+            get("/") { ar.getAuthors(call) }
             get("/login") { ar.loginAuthor(call) }
             get("/{authorId}") { ar.getAuthor(call) }
             put("/{authorId}") { ar.updateAuthor(call) }

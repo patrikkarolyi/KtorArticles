@@ -102,12 +102,7 @@ fun initDb(){
     Database.connect(hikari())
     transaction {
         SchemaUtils.create(AuthorTable,ArticleTable)
-        AuthorTable.insert{
-            it[email]="papaja"
-            it[firstname]="asd"
-            it[lastname]="asd"
-            it[username]="asd"
-        }
+        commit()
     }
 }
 

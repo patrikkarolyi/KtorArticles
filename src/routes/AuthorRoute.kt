@@ -13,6 +13,7 @@ import io.ktor.swagger.experimental.httpException
 class AuthorRoute {
 
     val authors = mutableListOf<Author>()
+    val interactor = AuthorInteractor()
     var loggedInAuthor = Author(
         id = 0,
         username = "Anonym",
@@ -22,21 +23,19 @@ class AuthorRoute {
     )
 
     suspend fun getAuthors(call: ApplicationCall) {
-        val a = AuthorInteractor()
-        a.getArticles()
+        interactor.getArticles()
         call.respond("oksa")
     }
 
     suspend fun loginAuthor(call: ApplicationCall) {
-        val username = call.getQuery<String>("username")
-        val author = authors.firstOrNull { it.username==username } ?: httpException(HttpStatusCode.BadRequest)
-        loggedInAuthor = author
-        call.respond("logged in as ${author.username}")
+        //val username = call.getQuery<String>("username")
+        interactor.createArticle()
+        call.respond("logged in as valaki9")
     }
 
     suspend fun getAuthor(call: ApplicationCall) {
-        val authorId = call.getPath<String>("authorId").toLong()
-        val author = authors.firstOrNull { it.id==authorId } ?: httpException(HttpStatusCode.BadRequest)
+        val authorId = call.getPath<String>("authorId").toInt()
+        val author = interactor.getArticle(authorId)
         if (false) httpException(HttpStatusCode.BadRequest)
         if (false) httpException(HttpStatusCode.NotFound)
         call.respond(author)

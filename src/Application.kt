@@ -1,24 +1,29 @@
 package hu.bme.koltin.mdt72t
 
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.http.*
+import com.fasterxml.jackson.databind.SerializationFeature
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.StatusPages
+import io.ktor.gson.gson
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.jackson.jackson
+import io.ktor.response.respond
+import io.ktor.response.respondText
+import io.ktor.routing.get
+import io.ktor.routing.routing
+import io.ktor.swagger.experimental.HttpException
 import io.ktor.thymeleaf.Thymeleaf
 import io.ktor.thymeleaf.ThymeleafContent
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
-import io.ktor.gson.*
-import io.ktor.features.*
-import io.ktor.client.*
-import io.ktor.client.engine.apache.*
-import com.fasterxml.jackson.databind.*
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
-import io.ktor.jackson.*
-import io.ktor.auth.*
-import io.ktor.swagger.experimental.*
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -75,7 +80,7 @@ fun Application.module() {
             exception<AuthorizationException> { cause ->
                 call.respond(HttpStatusCode.Forbidden)
             }
-            exception<HttpException> {  cause ->
+            exception<HttpException> { cause ->
                 call.respond(cause.code, cause.description)
             }
         }
@@ -87,21 +92,13 @@ fun Application.module() {
     }
 }
 
-private fun hikari(): HikariDataSource {
-    val config = HikariConfig()
-    config.driverClassName = "org.h2.Driver"
-    config.jdbcUrl = "jdbc:h2:mem:test"
-    config.maximumPoolSize = 3
-    config.isAutoCommit = true
-    config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-    config.validate()
-    return HikariDataSource(config)
-}
+fun initDb() {
 
-fun initDb(){
-    Database.connect(hikari())
+    val url = "jdbc:mysql://root:@localhost:3306/db?useUnicode=true&serverTimezone=UTC"
+    val driver = "com.mysql.cj.jdbc.Driver"
+    Database.connect(url = url, driver = driver, user = "root", password = "")
     transaction {
-        SchemaUtils.create(AuthorTable,ArticleTable)
+        SchemaUtils.create(AuthorTable, ArticleTable)
         commit()
     }
 }

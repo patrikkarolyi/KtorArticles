@@ -16,7 +16,7 @@ data class Article(
     }
 }
 
-object ArticleTable : Table() {
+object ArticleTable : Table("articles") {
     val id = integer("id").primaryKey().autoIncrement()
     val authorId = integer("authorid")
     val title = varchar("name", 255)
@@ -25,7 +25,7 @@ object ArticleTable : Table() {
 }
 
 data class Author(
-    val id: Long,
+    val id: Int,
     val username: String,
     val firstName: String,
     val lastName: String,

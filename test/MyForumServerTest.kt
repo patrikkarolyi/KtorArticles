@@ -61,7 +61,7 @@ class SwaggerRoutesTest {
     fun testCreateAuthor() {
         withTestApplication {
             // @TODO: Adjust path as required
-            handleRequest(HttpMethod.Post, "/author") {
+            handleRequest(HttpMethod.Post, "") {
                 // @TODO: Your body here
                 setBodyJson(mapOf<String, Any?>())
             }.apply {
@@ -78,7 +78,7 @@ class SwaggerRoutesTest {
     fun testLoginUser() {
         withTestApplication {
             // @TODO: Adjust path as required
-            handleRequest(HttpMethod.Get, "/author/login") {
+            handleRequest(HttpMethod.Get, "/login") {
             }.apply {
                 // @TODO: Your test here
                 assertEquals(HttpStatusCode.OK, response.status())
@@ -93,7 +93,7 @@ class SwaggerRoutesTest {
     fun testGetAuthorById() {
         withTestApplication {
             // @TODO: Adjust path as required
-            handleRequest(HttpMethod.Get, "/author/{authorId}") {
+            handleRequest(HttpMethod.Get, "/{authorId}") {
             }.apply {
                 // @TODO: Your test here
                 assertEquals(HttpStatusCode.OK, response.status())
@@ -108,7 +108,7 @@ class SwaggerRoutesTest {
     fun testUpdateUser() {
         withTestApplication {
             // @TODO: Adjust path as required
-            handleRequest(HttpMethod.Put, "/author/{authorId}") {
+            handleRequest(HttpMethod.Put, "/{authorId}") {
                 // @TODO: Your body here
                 setBodyJson(mapOf<String, Any?>())
             }.apply {
@@ -125,7 +125,7 @@ class SwaggerRoutesTest {
     fun testDeleteAuthor() {
         withTestApplication {
             // @TODO: Adjust path as required
-            handleRequest(HttpMethod.Delete, "/author/{authorId}") {
+            handleRequest(HttpMethod.Delete, "/{authorId}") {
             }.apply {
                 // @TODO: Your test here
                 assertEquals(HttpStatusCode.OK, response.status())

@@ -5,10 +5,10 @@ import org.jetbrains.exposed.sql.Table
 import java.util.*
 
 data class Article(
-    val id: Long,
-    val authorId: Long,
+    val id: Int,
+    val authorId: Int,
     val title: String,
-    val publicationDate: Date,
+    val publicationDate: Long,
     val topic: String
 ) {
     init {
@@ -25,10 +25,10 @@ object ArticleTable : Table() {
 }
 
 data class Author(
-    val id: Long,
+    val id: Int,
     val username: String,
-    val firstName: String,
-    val lastName: String,
+    val firstname: String,
+    val lastname: String,
     val email: String
 )
 

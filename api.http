@@ -34,10 +34,10 @@ GET {{host}}/forum/article/{{param_articleId}}
 
 ###
 
-# Create an author
+# Create an routes.author
 # 
 # none
-POST {{host}}/author
+POST {{host}}/routes.author
 Content-Type: application/json
 
 {
@@ -52,20 +52,20 @@ Content-Type: application/json
 
 ###
 
-# Logs author into the system
-GET {{host}}/author/login
+# Logs routes.author into the system
+GET {{host}}/routes.author/login
 
 ###
 
-# Get author by user name
-GET {{host}}/author/{{param_authorId}}
+# Get routes.author by user name
+GET {{host}}/routes.author/{{param_authorId}}
 
 ###
 
-# Updated author
+# Updated routes.author
 # 
 # none
-PUT {{host}}/author/{{param_authorId}}
+PUT {{host}}/routes.author/{{param_authorId}}
 Content-Type: application/json
 
 {
@@ -80,8 +80,8 @@ Content-Type: application/json
 
 ###
 
-# Delete author
+# Delete routes.author
 # 
 # none
-DELETE {{host}}/author/{{param_authorId}}
+DELETE {{host}}/routes.author/{{param_authorId}}
 

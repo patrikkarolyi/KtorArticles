@@ -58,18 +58,18 @@ open class MyForumClient(val endpoint: String, val client: HttpClient = HttpClie
     }
 
     /**
-     * Create an author
+     * Create an routes.author
      * 
      * none
      * 
-     * @param body Created author object
+     * @param body Created routes.author object
      * 
      * @return successful operation
      */
     suspend fun createAuthor(
         body: Author // BODY
     ): Unit {
-        return client.post<Unit>("$endpoint/author") {
+        return client.post<Unit>("$endpoint/routes.author") {
             this.body = mutableMapOf<String, Any?>().apply {
                 this["body"] = body
             }
@@ -77,7 +77,7 @@ open class MyForumClient(val endpoint: String, val client: HttpClient = HttpClie
     }
 
     /**
-     * Logs author into the system
+     * Logs routes.author into the system
      * 
      * @param username The user name for login
      * 
@@ -86,7 +86,7 @@ open class MyForumClient(val endpoint: String, val client: HttpClient = HttpClie
     suspend fun loginUser(
         username: String // QUERY
     ): String {
-        return client.get<String>("$endpoint/author/login") {
+        return client.get<String>("$endpoint/routes.author/login") {
             this.url {
                 this.parameters.apply {
                     this.append("username", "$username")
@@ -96,7 +96,7 @@ open class MyForumClient(val endpoint: String, val client: HttpClient = HttpClie
     }
 
     /**
-     * Get author by user name
+     * Get routes.author by user name
      * 
      * @param authorId none
      * 
@@ -105,12 +105,12 @@ open class MyForumClient(val endpoint: String, val client: HttpClient = HttpClie
     suspend fun getAuthorById(
         authorId: String // PATH
     ): Author {
-        return client.get<Author>("$endpoint/author/$authorId") {
+        return client.get<Author>("$endpoint/routes.author/$authorId") {
         }
     }
 
     /**
-     * Updated author
+     * Updated routes.author
      * 
      * none
      * 
@@ -123,7 +123,7 @@ open class MyForumClient(val endpoint: String, val client: HttpClient = HttpClie
         authorId: String, // PATH
         body: Author // BODY
     ): String {
-        return client.put<String>("$endpoint/author/$authorId") {
+        return client.put<String>("$endpoint/routes.author/$authorId") {
             this.body = mutableMapOf<String, Any?>().apply {
                 this["body"] = body
             }
@@ -131,7 +131,7 @@ open class MyForumClient(val endpoint: String, val client: HttpClient = HttpClie
     }
 
     /**
-     * Delete author
+     * Delete routes.author
      * 
      * none
      * 
@@ -142,7 +142,7 @@ open class MyForumClient(val endpoint: String, val client: HttpClient = HttpClie
     suspend fun deleteAuthor(
         authorId: String // PATH
     ): String {
-        return client.delete<String>("$endpoint/author/$authorId") {
+        return client.delete<String>("$endpoint/routes.author/$authorId") {
         }
     }
 }

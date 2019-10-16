@@ -10,8 +10,8 @@ basePath: "/v1"
 tags:
 - name: "forum"
   description: "Access to Forum"
-- name: "author"
-  description: "Operations about author"
+- name: "routes.author"
+  description: "Operations about routes.author"
 schemes:
 - "https"
 paths:
@@ -83,8 +83,8 @@ paths:
   /author:
     post:
       tags:
-      - "author"
-      summary: "Create an author"
+      - "routes.author"
+      summary: "Create an routes.author"
       description: "none"
       operationId: "createAuthor"
       produces:
@@ -93,7 +93,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Created author object"
+        description: "Created routes.author object"
         required: true
         schema:
           $ref: "#/definitions/Author"
@@ -103,8 +103,8 @@ paths:
   /author/login:
     get:
       tags:
-      - "author"
-      summary: "Logs author into the system"
+      - "routes.author"
+      summary: "Logs routes.author into the system"
       description: ""
       operationId: "loginUser"
       produces:
@@ -135,8 +135,8 @@ paths:
   /author/{authorId}:
     get:
       tags:
-      - "author"
-      summary: "Get author by user name"
+      - "routes.author"
+      summary: "Get routes.author by user name"
       description: ""
       operationId: "getAuthorById"
       produces:
@@ -159,8 +159,8 @@ paths:
           description: "User not found"
     put:
       tags:
-      - "author"
-      summary: "Updated author"
+      - "routes.author"
+      summary: "Updated routes.author"
       description: "none"
       operationId: "updateUser"
       produces:
@@ -185,8 +185,8 @@ paths:
           description: "User not found"
     delete:
       tags:
-      - "author"
-      summary: "Delete author"
+      - "routes.author"
+      summary: "Delete routes.author"
       description: "none"
       operationId: "deleteAuthor"
       produces:

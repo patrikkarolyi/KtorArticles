@@ -16,7 +16,7 @@ data class Article(
     }
 }
 
-object ArticleTable : Table() {
+object ArticleTable : Table("articles") {
     val id = integer("id").primaryKey().autoIncrement()
     val authorId = integer("authorid")
     val title = varchar("name", 255)

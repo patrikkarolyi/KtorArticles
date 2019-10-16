@@ -12,14 +12,20 @@ import io.ktor.features.*
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import com.fasterxml.jackson.databind.*
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import io.ktor.jackson.*
 import io.ktor.auth.*
 import io.ktor.swagger.experimental.*
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 fun Application.module() {
+
+    initDb()
 
     install(Thymeleaf) {
         setTemplateResolver(ClassLoaderTemplateResolver().apply {
@@ -78,6 +84,25 @@ fun Application.module() {
             registerForum()
             registerAuthor()
         }
+    }
+}
+
+private fun hikari(): HikariDataSource {
+    val config = HikariConfig()
+    config.driverClassName = "org.h2.Driver"
+    config.jdbcUrl = "jdbc:h2:mem:test"
+    config.maximumPoolSize = 3
+    config.isAutoCommit = true
+    config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+    config.validate()
+    return HikariDataSource(config)
+}
+
+fun initDb(){
+    Database.connect(hikari())
+    transaction {
+        SchemaUtils.create(AuthorTable,ArticleTable)
+        commit()
     }
 }
 

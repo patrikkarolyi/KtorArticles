@@ -57,7 +57,7 @@ fun Application.module() {
 
     routing {
         get("/") {
-            call.respondText("myHELLO WORLD!", contentType = ContentType.Text.Plain)
+            call.respondText("Roadmap", contentType = ContentType.Text.Plain)
         }
 
         get("/html-thymeleaf") {
@@ -93,10 +93,19 @@ fun Application.module() {
 }
 
 fun initDb() {
+    val user = "root"
+    val password =""
+    val address = "localhost"
+    val port = "3306"
+    val database = "ktordb"
+    val unicode = "useUnicode=true"
+    val timezone = "serverTimezone=UTC"
+    val ssl = "useSSL=false"
 
-    val url = "jdbc:mysql://root:@localhost:3306/db?useUnicode=true&serverTimezone=UTC"
+    val url = "jdbc:mysql://$user:$password@$address:$port/$database?$unicode&$timezone&$ssl"
     val driver = "com.mysql.cj.jdbc.Driver"
     Database.connect(url = url, driver = driver, user = "root", password = "")
+
     transaction {
         SchemaUtils.create(AuthorTable, ArticleTable)
         commit()

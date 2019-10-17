@@ -1,6 +1,6 @@
 package hu.bme.koltin.mdt72t
 
-import io.ktor.swagger.experimental.verifyParam
+import io.ktor.http.HttpStatusCode
 import org.jetbrains.exposed.sql.Table
 import java.util.*
 
@@ -10,11 +10,7 @@ data class Article(
     val title: String,
     val publicationDate: Long,
     val topic: String
-) {
-    init {
-        topic.verifyParam("topic") { it in setOf("Technology", "Biology", "Physics", "Matemathics", "Sport") }
-    }
-}
+)
 
 object ArticleTable : Table("articles") {
     val id = integer("id").primaryKey().autoIncrement()
@@ -39,6 +35,11 @@ object AuthorTable : Table("authors") {
     val lastname = varchar("lastname", 255)
     val email = varchar("email", 255)
 }
+
+
+data class ThymeleafUser(val id: Int, val name: String)
+
+class HttpException(val code: HttpStatusCode, val description: String = code.description) : RuntimeException(description)
 
 // Synthetic class name
 class Responses(

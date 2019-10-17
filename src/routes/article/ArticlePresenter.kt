@@ -6,10 +6,9 @@ import hu.bme.koltin.mdt72t.routes.article.ArticleViewState
 import io.ktor.application.ApplicationCall
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
-import io.ktor.swagger.experimental.getBodyParam
-import io.ktor.swagger.experimental.getPath
-import io.ktor.swagger.experimental.httpException
-import java.util.*
+import util.getBodyParam
+import util.getPath
+import util.httpException
 
 class ArticlePresenter {
 
@@ -23,20 +22,17 @@ class ArticlePresenter {
     }
 
     suspend fun getArticle(call: ApplicationCall) {
-        val id = call.getPath<String>("articleId").toInt()
+        val id = call.getPath<String>("articleId").toInt() ?: httpException(HttpStatusCode.BadRequest)
         val article = interactor.getArticle(id)
 
-        if (false) httpException(HttpStatusCode.BadRequest)
         if (false) httpException(HttpStatusCode.NotFound)
 
         call.respond(article)
     }
 
     suspend fun createArticle(call: ApplicationCall) {
-        val article = call.getBodyParam<Article>("body")
+        val article = call.getBodyParam<Article>("body") ?: httpException(HttpStatusCode.BadRequest)
         interactor.createArticle(article)
-
-        if (false) httpException(HttpStatusCode.BadRequest)
 
         call.respond(article)
     }

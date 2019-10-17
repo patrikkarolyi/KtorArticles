@@ -1,4 +1,4 @@
-package io.ktor.swagger.experimental
+package util
 
 import com.fasterxml.jackson.module.kotlin.*
 import kotlin.coroutines.*
@@ -21,8 +21,16 @@ import java.lang.reflect.Type
 
 class HttpException(val code: HttpStatusCode, val description: String = code.description) : RuntimeException(description)
 
-fun httpException(code: HttpStatusCode, message: String = code.description): Nothing = throw HttpException(code, message)
-fun httpException(code: Int, message: String = "Error $code"): Nothing = throw HttpException(HttpStatusCode(code, message))
+fun httpException(code: HttpStatusCode, message: String = code.description): Nothing = throw HttpException(
+    code,
+    message
+)
+fun httpException(code: Int, message: String = "Error $code"): Nothing = throw HttpException(
+    HttpStatusCode(
+        code,
+        message
+    )
+)
 @Suppress("unused")
 inline fun <T> T.verifyParam(name: String, callback: (T) -> Boolean): T {
     if (!callback(this)) throw IllegalArgumentException("$name"); return this
@@ -61,7 +69,7 @@ annotation class Auth(vararg val auths: String)
 //annotation class Feature(val clazz: KClass<out FeatureClass>)
 
 inline fun <reified T : SwaggerBaseApi> createClient(client: HttpClient, rootUrl: String): T =
-        createClient(T::class.java, client, rootUrl)
+    createClient(T::class.java, client, rootUrl)
 
 fun <T : SwaggerBaseApi> createClient(clazz: Class<T>, client: HttpClient, rootUrl: String): T {
     val rootUrlTrim = rootUrl.trimEnd('/')
@@ -70,7 +78,12 @@ fun <T : SwaggerBaseApi> createClient(clazz: Class<T>, client: HttpClient, rootU
 
     return Proxy.newProxyInstance(clazz.classLoader, arrayOf(clazz)) { proxy, method, args ->
         val info = apiClass.getInfo(method) ?: error("Can't find method $method")
-        val rparams = info.params.zip(args.slice(0 until info.params.size)).map { ApiClass.ApiParamInfoValue<Any?>(it.first as ApiClass.ApiParamInfo<Any?>, it.second) }.associateBy { it.name }
+        val rparams = info.params.zip(args.slice(0 until info.params.size)).map {
+            ApiClass.ApiParamInfoValue<Any?>(
+                it.first as ApiClass.ApiParamInfo<Any?>,
+                it.second
+            )
+        }.associateBy { it.name }
 
         //val params = method.parameters
         val cont = args.lastOrNull() as? Continuation<Any>?
@@ -205,7 +218,13 @@ class ApiClass(val clazz: Class<*>, val methods: List<ApiMethodInfo>) {
 
                     val auths = method.getAnnotationInAncestors(Auth::class.java)?.auths?.toList() ?: listOf()
 
-                    imethods += ApiMethodInfo(method, PathPattern(path.trim('/')), httpMethod, auths, params)
+                    imethods += ApiMethodInfo(
+                        method,
+                        PathPattern(path.trim('/')),
+                        httpMethod,
+                        auths,
+                        params
+                    )
                 }
             }
             return ApiClass(clazz, imethods)

@@ -3,7 +3,7 @@ package hu.bme.koltin.mdt72t
 import io.ktor.config.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import io.ktor.swagger.experimental.*
+import util.Json
 import kotlin.test.*
 
 class SwaggerRoutesTest {

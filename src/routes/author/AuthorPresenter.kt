@@ -5,10 +5,10 @@ import hu.bme.koltin.mdt72t.db.AuthorInteractor
 import io.ktor.application.ApplicationCall
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
-import io.ktor.swagger.experimental.getBodyParam
-import io.ktor.swagger.experimental.getPath
-import io.ktor.swagger.experimental.getQuery
-import io.ktor.swagger.experimental.httpException
+import util.getBodyParam
+import util.getPath
+import util.getQuery
+import util.httpException
 import routes.author.AuthorViewState
 
 class AuthorPresenter {

@@ -17,9 +17,6 @@ class AuthorPresenter {
     var state = AuthorViewState()
 
     suspend fun getAuthors(call: ApplicationCall) {
-
-        interactor.createAuthor(state.loggedInAuthor)
-
         val authors = interactor.getAuthors()
         state.authors = authors
         call.respond(authors)

@@ -42,8 +42,10 @@ dependencies {
     compile "io.ktor:ktor-client-core:$ktor_version"
     compile "io.ktor:ktor-client-core-jvm:$ktor_version"
     compile "io.ktor:ktor-client-apache:$ktor_version"
+    compile "io.ktor:ktor-client-json:$ktor_version"
     compile "io.ktor:ktor-jackson:$ktor_version"
     compile "io.ktor:ktor-auth:$ktor_version"
+
 
     compile "org.jetbrains.kotlinx:kotlinx-html-jvm:0.6.4"
     compile 'org.jetbrains.exposed:exposed:0.8.5'

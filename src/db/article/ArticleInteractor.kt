@@ -9,35 +9,26 @@ class ArticleInteractor {
 
     fun getArticles(): List<Article> =
         transaction {
-            ArticleTable.selectAll().map {
-                Article(
-                    id = it[ArticleTable.id],
-                    authorId = it[ArticleTable.authorId],
-                    title = it[ArticleTable.title],
-                    topic = it[ArticleTable.topic],
-                    publicationDate = it[ArticleTable.publicationDate]
-                )
-            }
+            ArticleTable.selectAll().getArticleModelList()
         }
 
 
-    fun getArticle(id: Int) =
-        transaction {
-            ArticleTable.select { ArticleTable.id.eq(id) }
+    fun getArticle(id: Int) = transaction {
+            ArticleTable.select { ArticleTable.id.eq(id) }.getArticleModelList().firstOrNull()
         }
 
 
-    fun createArticle(article: Article) {
-        transaction {
-            ArticleTable.insert {
-                it[authorId] = article.authorId
-                it[title] = article.title
-                it[topic] = article.topic
-                it[publicationDate] = article.publicationDate
-            }
-            commit()
+    fun createArticle(article: Article) = transaction {
+        val id = ArticleTable.insert {
+            it[authorId] = article.authorId
+            it[title] = article.title
+            it[topic] = article.topic
+            it[publicationDate] = article.publicationDate
         }
+        commit()
+        id.generatedKey?.toInt()
     }
+
 
     fun updateArticle(article: Article) {
         transaction {
@@ -58,4 +49,16 @@ class ArticleInteractor {
         }
     }
 
+}
+
+private fun Query.getArticleModelList(): List<Article> {
+    return this.map {
+        Article(
+            id = it[ArticleTable.id],
+            authorId = it[ArticleTable.authorId],
+            title = it[ArticleTable.title],
+            topic = it[ArticleTable.topic],
+            publicationDate = it[ArticleTable.publicationDate]
+        )
+    }
 }

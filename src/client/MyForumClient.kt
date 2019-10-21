@@ -67,24 +67,21 @@ class MyForumClient(
     }
 
     /**
+     * Get routes.author by user name
+     * @param authorId none
+     * @return successful operation
+     */
+    suspend fun getAuthor(authorId: Int): String {
+        return client.get("$endpoint/author/$authorId")
+    }
+
+    /**
      * Logs routes.author into the system
      * @param username The user name for login
      * @return successful operation
      */
     suspend fun loginAuthor(username: String): String {
-        return client.post<String>("$endpoint/author/login") {
-            this.body = mutableMapOf<String, Any?>().apply { this["body"] = username }
-        }
-    }
-
-    /**
-     * Get routes.author by user name
-     * @param authorId none
-     * @return successful operation
-     */
-    suspend fun getAuthor(authorId: Int): Author {
-        return client.get<Author>("$endpoint/routes.author/$authorId") {
-        }
+        return client.get("$endpoint/author/login/$username")
     }
 
     /**

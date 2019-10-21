@@ -7,15 +7,14 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class ArticleInteractor {
 
-    fun getArticles(): List<Article> =
-        transaction {
-            ArticleTable.selectAll().getArticleModelList()
-        }
+    fun getArticles(): List<Article> = transaction {
+        ArticleTable.selectAll().getArticleModelList()
+    }
 
 
     fun getArticle(id: Int) = transaction {
-            ArticleTable.select { ArticleTable.id.eq(id) }.getArticleModelList().firstOrNull()
-        }
+        ArticleTable.select { ArticleTable.id.eq(id) }.getArticleModelList().firstOrNull()
+    }
 
 
     fun createArticle(article: Article) = transaction {
@@ -30,24 +29,24 @@ class ArticleInteractor {
     }
 
 
-    fun updateArticle(article: Article) {
-        transaction {
-            ArticleTable.update({ ArticleTable.id.eq(article.id) }) {
-                it[authorId] = article.authorId
-                it[title] = article.title
-                it[topic] = article.topic
-                it[publicationDate] = article.publicationDate
-            }
-            commit()
+    fun updateArticle(article: Article) = transaction {
+        val updatedItemNumber = ArticleTable.update({ ArticleTable.id.eq(article.id) }) {
+            it[authorId] = article.authorId
+            it[title] = article.title
+            it[topic] = article.topic
+            it[publicationDate] = article.publicationDate
         }
+        commit()
+        updatedItemNumber
     }
 
-    fun deleteArticle(id: Int) {
-        transaction {
-            ArticleTable.deleteWhere { ArticleTable.id.eq(id) }
-            commit()
-        }
+
+    fun deleteArticle(id: Int) = transaction {
+        val deletedItemNumber = ArticleTable.deleteWhere { ArticleTable.id.eq(id) }
+        commit()
+        deletedItemNumber
     }
+
 
 }
 

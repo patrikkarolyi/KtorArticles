@@ -9,22 +9,22 @@ import kotlinx.coroutines.runBlocking
 fun main() : Unit = runBlocking {
     val client = MyForumClient(endpoint = "http://127.0.0.1:8080")
 
-    val article = client.getArticle(1)
+    val author = client.getAuthor(1)
 
-
-    println(article)
+    println(author)
     return@runBlocking
 
     client.createArticle(demoArticle)
     val articles = client.getArticles()
+    val article = client.getArticle(1)
 
 
     val authors = client.getAuthors()
     client.createAuthor(demoAuthor)
-    val author = client.getAuthor(0)
+
     client.loginAuthor(demoAuthor.username)
     client.updateAuthor(demoAuthor.id,demoAuthor)
-    client.deleteAuthor(demoAuthor.id)
+    client.deleteAuthor(1)
 
 }
 

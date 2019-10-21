@@ -32,10 +32,10 @@ class MyForumServer {
             get("/") { ar.getAuthors(call) }
             post("/") { ar.createAuthor(call) }
 
-            get("/login") { ar.loginAuthor(call) }
+            get("/login/{username}") { ar.loginAuthor(call) }
 
             get("/{authorId}") { ar.getAuthor(call) }
-            put("/{authorId}") { ar.updateAuthor(call) }
+            put("/") { ar.updateAuthor(call) }
             delete("/{authorId}") { ar.deleteAuthor(call) }
 
         }

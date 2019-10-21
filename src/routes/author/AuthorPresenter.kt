@@ -25,8 +25,8 @@ class AuthorPresenter {
     }
 
     suspend fun loginAuthor(call: ApplicationCall) {
-        val username = call.parameters["username"] ?: return call.respond(HttpStatusCode.BadRequest)
-        val author = state.authors.firstOrNull { it.username == username } ?:  return call.respond(HttpStatusCode.NotFound)
+        val username = call.parameters["username"].toString()
+        val author = interactor.getAuthors().firstOrNull{it.username == username} ?:  return call.respond(HttpStatusCode.NotFound)
         state.loggedInAuthor = author
         call.respond(author)
     }
@@ -50,7 +50,7 @@ class AuthorPresenter {
     }
 
     suspend fun deleteAuthor(call: ApplicationCall) {
-        val id =  call.parameters["id"]?.toInt()  ?: return call.respond(HttpStatusCode.BadRequest)
+        val id =  call.parameters["authorId"]?.toInt()  ?: return call.respond(HttpStatusCode.BadRequest)
         interactor.deleteAuthor(id) ?: httpException(HttpStatusCode.NotFound)
         call.respond("author deleted with $id id.")
     }

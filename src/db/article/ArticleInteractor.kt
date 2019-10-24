@@ -7,55 +7,57 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class ArticleInteractor {
 
-    fun getArticles(): List<Article> =
-        transaction {
-            ArticleTable.selectAll().map {
-                Article(
-                    id = it[ArticleTable.id],
-                    authorId = it[ArticleTable.authorId],
-                    title = it[ArticleTable.title],
-                    topic = it[ArticleTable.topic],
-                    publicationDate = it[ArticleTable.publicationDate]
-                )
-            }
-        }
-
-
-    fun getArticle(id: Int) =
-        transaction {
-            ArticleTable.select { ArticleTable.id.eq(id) }
-        }
-
-
-    fun createArticle(article: Article) {
-        transaction {
-            ArticleTable.insert {
-                it[authorId] = article.authorId
-                it[title] = article.title
-                it[topic] = article.topic
-                it[publicationDate] = article.publicationDate
-            }
-            commit()
-        }
+    fun getArticles(): List<Article> = transaction {
+        ArticleTable.selectAll().getArticleModelList()
     }
 
-    fun updateArticle(article: Article) {
-        transaction {
-            ArticleTable.update({ ArticleTable.id.eq(article.id) }) {
-                it[authorId] = article.authorId
-                it[title] = article.title
-                it[topic] = article.topic
-                it[publicationDate] = article.publicationDate
-            }
-            commit()
-        }
+
+    fun getArticle(id: Int) = transaction {
+        ArticleTable.select { ArticleTable.id.eq(id) }.getArticleModelList().firstOrNull()
     }
 
-    fun deleteArticle(id: Int) {
-        transaction {
-            ArticleTable.deleteWhere { ArticleTable.id.eq(id) }
-            commit()
+
+    fun createArticle(article: Article) = transaction {
+        val id = ArticleTable.insert {
+            it[authorId] = article.authorId
+            it[title] = article.title
+            it[topic] = article.topic
+            it[publicationDate] = article.publicationDate
         }
+        commit()
+        id.generatedKey?.toInt()
     }
 
+
+    fun updateArticle(article: Article) = transaction {
+        val updatedItemNumber = ArticleTable.update({ ArticleTable.id.eq(article.id) }) {
+            it[authorId] = article.authorId
+            it[title] = article.title
+            it[topic] = article.topic
+            it[publicationDate] = article.publicationDate
+        }
+        commit()
+        updatedItemNumber
+    }
+
+
+    fun deleteArticle(id: Int) = transaction {
+        val deletedItemNumber = ArticleTable.deleteWhere { ArticleTable.id.eq(id) }
+        commit()
+        deletedItemNumber
+    }
+
+
+}
+
+private fun Query.getArticleModelList(): List<Article> {
+    return this.map {
+        Article(
+            id = it[ArticleTable.id],
+            authorId = it[ArticleTable.authorId],
+            title = it[ArticleTable.title],
+            topic = it[ArticleTable.topic],
+            publicationDate = it[ArticleTable.publicationDate]
+        )
+    }
 }

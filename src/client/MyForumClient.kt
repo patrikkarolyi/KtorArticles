@@ -1,148 +1,113 @@
 package hu.bme.koltin.mdt72t
 
-import io.ktor.client.*
-import io.ktor.client.request.*
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
+import io.ktor.client.request.delete
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.put
+import io.ktor.content.TextContent
+import io.ktor.http.ContentType
 
 /**
  * MyForum Client
- * 
  * Some brief description.
  */
-open class MyForumClient(val endpoint: String, val client: HttpClient = HttpClient()) {
+class MyForumClient(
+    val endpoint: String,
+    val client: HttpClient = HttpClient(Apache)
+) {
+
     /**
      * List all articles
-     * 
-     * none
-     * 
      * @return successful operation
      */
-    suspend fun getArticles(
-    ): Responses {
-        return client.get<Responses>("$endpoint/forum/article") {
-        }
+    suspend fun getArticles(): String {
+        return client.get<String>("$endpoint/article")
     }
 
     /**
      * Create an article
-     * 
-     * none
-     * 
      * @param body article for creation
-     * 
      * @return successful operation
      */
-    suspend fun createArticle(
-        body: Article // BODY
-    ): Article {
-        return client.post<Article>("$endpoint/forum/article") {
-            this.body = mutableMapOf<String, Any?>().apply {
-                this["body"] = body
-            }
-        }
+    suspend fun createArticle(article: Article): String = client.post("$endpoint/article") {
+        body = article.stringify()
     }
+
 
     /**
      * Search article by Id
-     * 
-     * none
-     * 
      * @param articleId none
-     * 
      * @return successful operation
      */
-    suspend fun getArticle(
-        articleId: String // PATH
-    ): Article {
-        return client.get<Article>("$endpoint/forum/article/$articleId") {
-        }
+    suspend fun getArticle(articleId: Int): String {
+        return client.get("$endpoint/article/$articleId")
+    }
+
+    /**
+     * List all authors
+     * @return successful operation
+     */
+    suspend fun getAuthors(): String {
+        return client.get<String>("$endpoint/author")
     }
 
     /**
      * Create an routes.author
-     * 
-     * none
-     * 
      * @param body Created routes.author object
-     * 
      * @return successful operation
      */
-    suspend fun createAuthor(
-        body: Author // BODY
-    ): Unit {
-        return client.post<Unit>("$endpoint/routes.author") {
-            this.body = mutableMapOf<String, Any?>().apply {
-                this["body"] = body
-            }
-        }
+    suspend fun createAuthor(author: Author): String = client.post("$endpoint/author") {
+        body = author.stringify()
+    }
+
+
+    /**
+     * Get routes.author by user name
+     * @param authorId none
+     * @return successful operation
+     */
+    suspend fun getAuthor(authorId: Int): String {
+        return client.get("$endpoint/author/$authorId")
     }
 
     /**
      * Logs routes.author into the system
-     * 
      * @param username The user name for login
-     * 
      * @return successful operation
      */
-    suspend fun loginUser(
-        username: String // QUERY
-    ): String {
-        return client.get<String>("$endpoint/routes.author/login") {
-            this.url {
-                this.parameters.apply {
-                    this.append("username", "$username")
-                }
-            }
-        }
-    }
-
-    /**
-     * Get routes.author by user name
-     * 
-     * @param authorId none
-     * 
-     * @return successful operation
-     */
-    suspend fun getAuthorById(
-        authorId: String // PATH
-    ): Author {
-        return client.get<Author>("$endpoint/routes.author/$authorId") {
-        }
+    suspend fun loginAuthor(username: String): String {
+        return client.get("$endpoint/author/login/$username")
     }
 
     /**
      * Updated routes.author
-     * 
-     * none
-     * 
      * @param authorId none
      * @param body Updated user object
-     * 
      * @return OK
      */
-    suspend fun updateUser(
-        authorId: String, // PATH
-        body: Author // BODY
-    ): String {
-        return client.put<String>("$endpoint/routes.author/$authorId") {
-            this.body = mutableMapOf<String, Any?>().apply {
-                this["body"] = body
-            }
-        }
+    suspend fun updateAuthor(author: Author): String = client.put("$endpoint/author") {
+        body = author.stringify()
     }
 
     /**
      * Delete routes.author
-     * 
-     * none
-     * 
      * @param authorId none
-     * 
      * @return OK
      */
-    suspend fun deleteAuthor(
-        authorId: String // PATH
-    ): String {
-        return client.delete<String>("$endpoint/routes.author/$authorId") {
-        }
+    suspend fun deleteAuthor(authorId: Int): String {
+        return client.delete("$endpoint/author/$authorId")
     }
+}
+
+fun Article.stringify(): TextContent {
+    val json = jacksonObjectMapper()
+    return TextContent(json.writeValueAsString(this), contentType = ContentType.Application.Json)
+}
+
+fun Author.stringify(): TextContent {
+    val json = jacksonObjectMapper()
+    return TextContent(json.writeValueAsString(this), contentType = ContentType.Application.Json)
 }

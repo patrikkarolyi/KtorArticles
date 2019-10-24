@@ -41,6 +41,3 @@ data class ThymeleafUser(val id: Int, val name: String)
 
 class HttpException(val code: HttpStatusCode, val description: String = code.description) : RuntimeException(description)
 
-// Synthetic class name
-class Responses(
-)

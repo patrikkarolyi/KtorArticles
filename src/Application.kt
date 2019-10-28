@@ -41,9 +41,6 @@ fun Application.module() {
 
     install(Authentication) {
     }
-
-    val client = HttpClient(Apache) {
-    }
 }
 
 

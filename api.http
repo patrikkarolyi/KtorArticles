@@ -20,6 +20,7 @@ Content-Type: application/json
     "body": {
         "id": 0,
         "authorId": 0,
+        "email": "body.email",
         "publicationDate": "",
         "topic": "body.topic"
     }
@@ -84,4 +85,6 @@ Content-Type: application/json
 # 
 # none
 DELETE {{host}}/routes.author/{{param_authorId}}
+
+###
 
